@@ -283,3 +283,26 @@ def set_dropout(model, p):
             count += 1
     return count
 
+# Step 17 - RMSNorm
+import torch
+import torch.nn as nn
+
+
+class RMSNorm(nn.Module):
+    def __init__(self, d_model, eps=1e-5):
+        super().__init__()
+        # TODO: scale parameter (ones) and eps
+        self.scale = nn.Parameter(torch.ones(d_model))
+        self.eps = eps
+
+    def forward(self, x):
+        input_dtype = x.dtype
+        t = x.to(torch.float32)
+
+        # Compute variance of squares along the hidden dimension, keeping dimensions
+        variance = t.pow(2).mean(dim=-1, keepdim=True)
+        # Multiply by rsqrt (reciprocal square root) and scale
+        output = t * torch.rsqrt(variance + self.eps) * self.scale
+
+        return output.to(input_dtype)
+
