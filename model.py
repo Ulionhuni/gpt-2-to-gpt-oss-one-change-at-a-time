@@ -306,3 +306,24 @@ class RMSNorm(nn.Module):
 
         return output.to(input_dtype)
 
+# Step 18 - attention_mask
+import torch
+
+
+def attention_mask(T, window=None):
+    # TODO: causal (j <= i), and j > i - window when window is given
+    
+    # i: [T, 1] represents the query positions
+    # j: [T, 1] represents the key positions
+    i = torch.arange(T).unsqueeze(1)
+    j = torch.arange(T).unsqueeze(0)
+
+    # Causal mask: queries can only attend keys up to their own position
+    mask = j <= i
+
+    # Optional sliding window
+    if window is not None:
+      mask = mask & (j > i - window)
+    
+    return mask
+

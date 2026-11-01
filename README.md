@@ -20,6 +20,7 @@ python scaffold.py
 - [x] **8.** train_lm
 - [x] **9.** set_dropout
 - [x] **17.** RMSNorm
+- [x] **18.** attention_mask
 
 ---
 
