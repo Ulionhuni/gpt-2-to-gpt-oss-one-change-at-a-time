@@ -19,6 +19,7 @@ python scaffold.py
 - [x] **7.** evaluate_bpc
 - [x] **8.** train_lm
 - [x] **9.** set_dropout
+- [x] **10.** rope_inv_freq
 - [x] **17.** RMSNorm
 - [x] **18.** attention_mask
 
