@@ -293,6 +293,22 @@ def rope_inv_freq(head_dim, base):
     inv_freq = base ** (-2.0 * i / head_dim)
     return inv_freq
 
+# Step 11 - apply_rope
+import torch
+
+
+def apply_rope(x, inv_freq, positions, concentration=1.0):
+    # TODO: angles = positions x inv_freq, scaled cos/sin, half-split rotation
+    angles = torch.outer(
+        positions.to(device = x.device, dtype=torch.float32),
+        inv_freq.to(device = x.device, dtype=torch.float32)
+    )
+    cos = (angles.cos() * concentration).to(x.dtype)
+    sin = (angles.sin() * concentration).to(x.dtype)
+
+    x1, x2 = torch.chunk(x, 2, dim=-1)
+    return torch.cat((x1 * cos - x2 * sin, x2 * cos + x1 * sin), dim=-1)
+
 # Step 17 - RMSNorm
 import torch
 import torch.nn as nn
