@@ -288,7 +288,7 @@ import torch
 
 
 def rope_inv_freq(head_dim, base):
-    # TODO: base ** (-2i / head_dim) for i = 0 .. head_dim/2 - 1, float32
+    # base ** (-2i / head_dim) for i = 0 .. head_dim/2 - 1, float32
     i = torch.arange(0, head_dim // 2, dtype=torch.float32)
     inv_freq = base ** (-2.0 * i / head_dim)
     return inv_freq
