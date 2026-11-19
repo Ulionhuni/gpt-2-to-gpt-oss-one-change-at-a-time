@@ -309,6 +309,35 @@ def apply_rope(x, inv_freq, positions, concentration=1.0):
     x1, x2 = torch.chunk(x, 2, dim=-1)
     return torch.cat((x1 * cos - x2 * sin, x2 * cos + x1 * sin), dim=-1)
 
+# Step 12 - yarn_inv_freq
+import math
+import torch
+
+
+def yarn_inv_freq(head_dim, base, factor, initial_context, ntk_alpha=1.0, ntk_beta=32.0):
+    # concentration and the NTK-by-parts blend of interpolated and extrapolated frequencies
+    freq = base ** (torch.arange(0, head_dim, 2, dtype=torch.float32) / head_dim)
+
+    if factor <= 1:
+        return 1.0, 1.0 / freq
+    
+    concentration = 0.1 * math.log(factor) + 1.0
+
+    d_half = head_dim / 2
+
+    low = d_half * math.log(initial_context / (ntk_beta * 2 * math.pi)) / math.log(base)
+    high = d_half * math.log(initial_context / (ntk_alpha * 2 * math.pi)) / math.log(base)
+    assert 0 < low < high < d_half - 1
+
+    interpolation = 1.0 / (factor * freq)   # stretched: angles slowed down by factor
+    extrapolation = 1.0 / freq              # the original RoPE frequencies
+
+    ramp = (torch.arange(d_half, dtype=torch.float32) - low) / (high - low)
+    mask = 1 - ramp.clamp(0, 1) # 1 = keep original, 0 = fully interpolate
+
+    inv_freq = interpolation * (1 - mask) + extrapolation * mask
+    return concentration, inv_freq
+
 # Step 17 - RMSNorm
 import torch
 import torch.nn as nn
