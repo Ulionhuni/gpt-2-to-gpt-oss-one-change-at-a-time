@@ -15,7 +15,7 @@ STORIES_URL = "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/ma
 
 
 def fetch_stories(max_chars):
-    # TODO: download to the temp cache once, read, return the first max_chars characters
+    # download to the temp cache once, read, return the first max_chars characters
     path = os.path.join(tempfile.gettempdir(), "gptoss_tinystories_valid.txt")
     if not os.path.exists(path):
         urllib.request.urlretrieve(STORIES_URL, path)
