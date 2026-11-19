@@ -201,7 +201,7 @@ import torch.nn.functional as F
 
 
 def evaluate_bpc(model, data, block_size, batch_size=16, n_batches=8, seed=0):
-    # TODO: eval mode, fixed-seed batches, mean cross-entropy / ln 2, restore mode
+    # eval mode, fixed-seed batches, mean cross-entropy / ln 2, restore mode
 
     # Switch to eval mode
     was_training = model.training
@@ -240,7 +240,7 @@ import torch.nn.functional as F
 
 
 def train_lm(model, data, steps, block_size, batch_size=32, lr=3e-3, seed=0):
-    # TODO: seed, AdamW(0.9, 0.95, wd 0.1), loop with clipping, return losses
+    # seed, AdamW(0.9, 0.95, wd 0.1), loop with clipping, return losses
     # Initialize generator, optimizer
     torch.manual_seed(seed)
     generator = torch.Generator().manual_seed(seed)
