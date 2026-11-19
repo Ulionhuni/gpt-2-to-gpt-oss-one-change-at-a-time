@@ -298,7 +298,7 @@ import torch
 
 
 def apply_rope(x, inv_freq, positions, concentration=1.0):
-    # TODO: angles = positions x inv_freq, scaled cos/sin, half-split rotation
+    # angles = positions x inv_freq, scaled cos/sin, half-split rotation
     angles = torch.outer(
         positions.to(device = x.device, dtype=torch.float32),
         inv_freq.to(device = x.device, dtype=torch.float32)
