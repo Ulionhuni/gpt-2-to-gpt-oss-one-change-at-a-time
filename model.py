@@ -118,7 +118,7 @@ import torch.nn.functional as F
 class GPT2MLP(nn.Module):
     def __init__(self, d_model, dropout=0.0):
         super().__init__()
-        # TODO: fc (d -> 4d), proj (4d -> d), drop
+        # fc (d -> 4d), proj (4d -> d), drop
         self.fc = nn.Linear(d_model, 4 * d_model)
         self.proj = nn.Linear(4 * d_model, d_model)
         self.drop = nn.Dropout(dropout)
@@ -134,7 +134,7 @@ import torch.nn as nn
 class GPT2Block(nn.Module):
     def __init__(self, d_model, n_heads, dropout):
         super().__init__()
-        # TODO: ln_1, attn, ln_2, mlp
+        # ln_1, attn, ln_2, mlp
         self.ln_1 = nn.LayerNorm(d_model)
         self.attn = CausalSelfAttention(d_model, n_heads, dropout)
         self.ln_2 = nn.LayerNorm(d_model)
@@ -148,7 +148,7 @@ class GPT2Block(nn.Module):
 class GPT2(nn.Module):
     def __init__(self, vocab_size, d_model, n_layers, n_heads, block_size, dropout=0.1):
         super().__init__()
-        # TODO: wte, wpe, drop, blocks, ln_f, head (tied), GPT-2 init
+        # wte, wpe, drop, blocks, ln_f, head (tied), GPT-2 init
         self.block_size = block_size
         self.wte = nn.Embedding(vocab_size, d_model) # Word Token Embedding
         self.wpe = nn.Embedding(block_size, d_model) # Word Position Embedding
