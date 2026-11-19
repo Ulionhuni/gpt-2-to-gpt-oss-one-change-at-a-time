@@ -47,7 +47,7 @@ import torch
 
 
 def get_batch(data, block_size, batch_size, generator=None):
-    # TODO: random starts, input windows x and next-character targets y
+    # random starts, input windows x and next-character targets y
     ids = torch.randint(0, len(data) - block_size - 1, (batch_size, ), generator=generator)
     x = torch.stack([data[i : i + block_size] for i in ids])
     y = torch.stack([data[i + 1: i + block_size + 1] for i in ids])
@@ -62,7 +62,7 @@ import torch.nn as nn
 class CausalSelfAttention(nn.Module):
     def __init__(self, d_model, n_heads, dropout=0.0):
         super().__init__()
-        # TODO: qkv, proj, attn_drop, resid_drop, n_heads, head_dim
+        # qkv, proj, attn_drop, resid_drop, n_heads, head_dim
         self.d_model = d_model
         self.n_heads = n_heads
         self.head_dim = d_model // n_heads
