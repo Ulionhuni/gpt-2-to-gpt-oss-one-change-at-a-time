@@ -275,7 +275,7 @@ import torch.nn as nn
 
 
 def set_dropout(model, p):
-    # TODO: set p on every nn.Dropout and return how many there are
+    # set p on every nn.Dropout and return how many there are
     count = 0
     for module in model.modules():
         if isinstance(module, nn.Dropout):
