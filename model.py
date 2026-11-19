@@ -338,6 +338,18 @@ def yarn_inv_freq(head_dim, base, factor, initial_context, ntk_alpha=1.0, ntk_be
     inv_freq = interpolation * (1 - mask) + extrapolation * mask
     return concentration, inv_freq
 
+# Step 13 - swiglu_oss
+import torch
+
+
+def swiglu_oss(x, alpha=1.702, limit=7.0):
+    # interleaved gate/linear halves, clamps, gate * sigmoid(alpha * gate) * (linear + 1)
+    x_glu, x_linear = x[..., ::2], x[..., 1::2]
+    x_glu = x_glu.clamp(min = None, max = limit)
+    x_linear = x_linear.clamp(min = -limit, max = limit)
+    out_glu = x_glu * torch.sigmoid(alpha * x_glu)
+    return out_glu * (x_linear + 1)
+
 # Step 17 - RMSNorm
 import torch
 import torch.nn as nn
